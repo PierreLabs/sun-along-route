@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sun Along Route</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<link rel="stylesheet" href="style.css">
+<script type="importmap">
+{ "imports": {
+  "astronomy-engine": "https://esm.sh/astronomy-engine@2.1.19",
+  "tz-lookup": "https://esm.sh/tz-lookup@6.1.25",
+  "topojson-client": "https://esm.sh/topojson-client@3.1.0"
+} }
+</script>
+</head>
+<body>
+<header>
+  <h1>Sun Along Route</h1>
+  <p>Sunrise, sunset and twilight along a SimBrief flight plan, in UTC and in civil time of the time zone you are flying over.</p>
+</header>
+
+<section class="inputs">
+  <form id="fetch-form">
+    <label>SimBrief username <input id="username" placeholder="e.g. pilot123" autocomplete="off"></label>
+    <button>Load my latest OFP</button>
+  </form>
+  <div class="alt">
+    <label class="file">Or import an OFP .json file <input type="file" id="file" accept=".json,application/json"></label>
+    <button id="sample" type="button">Example (JFK → ATH, synthetic)</button>
+  </div>
+  <p id="status" role="status"></p>
+</section>
+
+<main hidden id="result">
+  <h2 id="title"></h2>
+  <div id="map"></div>
+  <div class="timebar">
+    <input type="range" id="time" aria-label="Flight time">
+    <span id="time-label"></span>
+    <small class="legend">Shaded area: sun below the horizon as seen from the aircraft's altitude (same threshold as the table). Local time: civil time zone over land or within 12 NM of a coast, nautical time zone at sea.</small>
+  </div>
+  <table>
+    <thead><tr><th>Event</th><th>UTC</th><th>Local time</th><th>Time zone</th><th>Position</th><th>Alt.</th></tr></thead>
+    <tbody id="rows"></tbody>
+  </table>
+  <p id="none" hidden>The sun never crosses these thresholds along this route: the whole flight is in daylight or in darkness.</p>
+</main>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script type="module" src="app.js"></script>
+</body>
+</html>

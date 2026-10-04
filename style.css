@@ -1,0 +1,25 @@
+:root { --bg:#fff; --fg:#1b2430; --muted:#667; --line:#dde2ea; --accent:#d9730d; }
+@media (prefers-color-scheme: dark) { :root { --bg:#10151c; --fg:#e6ebf2; --muted:#9aa5b5; --line:#2a3340; --accent:#f59e42; } }
+* { box-sizing: border-box; }
+body { margin:0; padding:0 16px 40px; background:var(--bg); color:var(--fg); font:15px/1.5 system-ui, sans-serif; max-width:1000px; margin-inline:auto; }
+h1 { margin-bottom:0; color:var(--accent); } header p { color:var(--muted); margin-top:4px; }
+.inputs { display:flex; flex-direction:column; gap:10px; margin:16px 0; }
+.inputs form, .alt { display:flex; flex-wrap:wrap; gap:10px; align-items:center; }
+input[type=text], #username { padding:6px 8px; border:1px solid var(--line); border-radius:6px; background:transparent; color:inherit; }
+button { padding:6px 12px; border:1px solid var(--accent); background:transparent; color:var(--accent); border-radius:6px; cursor:pointer; }
+button:hover { background:var(--accent); color:var(--bg); }
+#status { color:var(--muted); min-height:1.5em; } #status.err { color:#d33; }
+#map { height:360px; border-radius:8px; border:1px solid var(--line); margin-bottom:8px; }
+.timebar { margin-bottom:16px; }
+.timebar input { display:block; width:100%; margin:0 0 6px; accent-color:var(--accent); }
+#time-label { display:block; min-height:1.5em; color:var(--muted); font-variant-numeric:tabular-nums; }
+tbody tr[data-ms] { cursor:pointer; } tbody tr[data-ms]:hover { background:color-mix(in srgb, var(--accent) 10%, transparent); }
+.table-wrap, table { width:100%; }
+table { border-collapse:collapse; } th, td { text-align:left; padding:8px; border-bottom:1px solid var(--line); }
+th { color:var(--muted); font-weight:600; } td.utc, td.local { font-variant-numeric: tabular-nums; font-weight:600; }
+td small { color:var(--muted); display:block; }
+@media (max-width:640px) { table { font-size:13px; } th:nth-child(4), td:nth-child(4) { display:none; } }
+.plane-icon { background:none; border:none; }
+.plane svg { width:26px; height:26px; display:block; }
+.plane polygon { fill:#d9730d; stroke:#fff; stroke-width:2; stroke-linejoin:round; }
+.legend { display:block; color:var(--muted); font-size:12px; margin-top:2px; }

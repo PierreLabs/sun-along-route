@@ -1,0 +1,17 @@
+{
+  "name": "sun-along-route",
+  "version": "0.1.0",
+  "description": "Sunrise/sunset along a SimBrief flight plan (UTC + local civil time)",
+  "type": "module",
+  "license": "MIT",
+  "scripts": {
+    "test": "node --test test/events.test.js test/terminator.test.js test/tz-sea.test.js",
+    "start": "node serve.js"
+  },
+  "dependencies": {
+    "astronomy-engine": "^2.1.19",
+    "topojson-client": "^3.1.0",
+    "tz-lookup": "^6.1.25",
+    "world-atlas": "^2.0.2"
+  }
+}

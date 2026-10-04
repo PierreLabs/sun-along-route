@@ -1,0 +1,137 @@
+{
+  "ofp": {
+    "origin": {
+      "icao_code": "KJFK"
+    },
+    "destination": {
+      "icao_code": "LGAV"
+    },
+    "times": {
+      "est_off": "1791234000"
+    },
+    "navlog": {
+      "fix": [
+        {
+          "ident": "KJFK",
+          "via_airway": "DCT",
+          "pos_lat": "40.63980",
+          "pos_long": "-73.77890",
+          "time_total": "0",
+          "altitude_feet": "0"
+        },
+        {
+          "ident": "WPT01",
+          "via_airway": "DCT",
+          "pos_lat": "43.37925",
+          "pos_long": "-67.99345",
+          "time_total": "2314",
+          "altitude_feet": "21429"
+        },
+        {
+          "ident": "WPT02",
+          "via_airway": "DCT",
+          "pos_lat": "45.80064",
+          "pos_long": "-61.69431",
+          "time_total": "4629",
+          "altitude_feet": "36000"
+        },
+        {
+          "ident": "WPT03",
+          "via_airway": "DCT",
+          "pos_lat": "47.84618",
+          "pos_long": "-54.86997",
+          "time_total": "6943",
+          "altitude_feet": "36000"
+        },
+        {
+          "ident": "WPT04",
+          "via_airway": "DCT",
+          "pos_lat": "49.45657",
+          "pos_long": "-47.54819",
+          "time_total": "9257",
+          "altitude_feet": "36000"
+        },
+        {
+          "ident": "WPT05",
+          "via_airway": "DCT",
+          "pos_lat": "50.57663",
+          "pos_long": "-39.80797",
+          "time_total": "11571",
+          "altitude_feet": "36000"
+        },
+        {
+          "ident": "WPT06",
+          "via_airway": "DCT",
+          "pos_lat": "51.16271",
+          "pos_long": "-31.78311",
+          "time_total": "13886",
+          "altitude_feet": "36000"
+        },
+        {
+          "ident": "WPT07",
+          "via_airway": "DCT",
+          "pos_lat": "51.19001",
+          "pos_long": "-23.65118",
+          "time_total": "16200",
+          "altitude_feet": "36000"
+        },
+        {
+          "ident": "WPT08",
+          "via_airway": "DCT",
+          "pos_lat": "50.65731",
+          "pos_long": "-15.60766",
+          "time_total": "18514",
+          "altitude_feet": "36000"
+        },
+        {
+          "ident": "WPT09",
+          "via_airway": "DCT",
+          "pos_lat": "49.58731",
+          "pos_long": "-7.83318",
+          "time_total": "20829",
+          "altitude_feet": "36000"
+        },
+        {
+          "ident": "WPT10",
+          "via_airway": "DCT",
+          "pos_lat": "48.02212",
+          "pos_long": "-0.46653",
+          "time_total": "23143",
+          "altitude_feet": "36000"
+        },
+        {
+          "ident": "WPT11",
+          "via_airway": "DCT",
+          "pos_lat": "46.01615",
+          "pos_long": "6.40794",
+          "time_total": "25457",
+          "altitude_feet": "36000"
+        },
+        {
+          "ident": "WPT12",
+          "via_airway": "DCT",
+          "pos_lat": "43.62858",
+          "pos_long": "12.75797",
+          "time_total": "27771",
+          "altitude_feet": "36000"
+        },
+        {
+          "ident": "WPT13",
+          "via_airway": "DCT",
+          "pos_lat": "40.91753",
+          "pos_long": "18.59187",
+          "time_total": "30086",
+          "altitude_feet": "25714"
+        },
+        {
+          "ident": "LGAV",
+          "via_airway": "DCT",
+          "pos_lat": "37.93640",
+          "pos_long": "23.94450",
+          "time_total": "32400",
+          "altitude_feet": "0"
+        }
+      ]
+    }
+  }
+}
