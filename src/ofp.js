@@ -6,6 +6,12 @@ const asArray = (x) => (x == null ? [] : Array.isArray(x) ? x : [x]);
  * Converts a SimBrief OFP (JSON v2) into a timestamped route.
  * Assumes navlog.fix[].time_total = seconds elapsed since takeoff.
  */
+/** Same route with the whole flight shifted so that takeoff happens at newOffMs (durations unchanged). */
+export function shiftRoute(route, newOffMs) {
+  const delta = newOffMs - route.offMs;
+  return { ...route, offMs: newOffMs, points: route.points.map((p) => ({ ...p, t: p.t + delta })) };
+}
+
 export function parseOfp(json) {
   const ofp = json.ofp ?? json; // the export sometimes holds the fields at the top level
   const fixes = asArray(ofp.navlog?.fix);

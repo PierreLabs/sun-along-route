@@ -77,3 +77,17 @@ test("ground speed: consistent with distance/time over a segment", async () => {
   assert.ok(Math.abs(groundSpeedKt(r, mid) - expected) < 1, `${groundSpeedKt(r, mid)} vs ${expected}`);
   assert.ok(expected > 400 && expected < 700); // order of magnitude of an airliner
 });
+
+test("shiftRoute moves the whole flight and keeps the durations", async () => {
+  const { shiftRoute } = await import("../src/ofp.js");
+  const r = parseOfp(sample);
+  const s = shiftRoute(r, r.offMs + 3 * 3600000);
+  assert.equal(s.offMs, r.offMs + 3 * 3600000);
+  assert.equal(s.points[0].t, r.points[0].t + 3 * 3600000);
+  assert.equal(s.points.at(-1).t - s.points[0].t, r.points.at(-1).t - r.points[0].t);
+  assert.equal(r.points[0].t, r.offMs); // the original is not mutated
+  // the sun events move with the takeoff time: leaving 12 h later turns the night into day
+  const before = findSunEvents(r).map((e) => e.label).join();
+  const after = findSunEvents(shiftRoute(r, r.offMs + 12 * 3600000)).map((e) => e.label).join();
+  assert.notEqual(before, after);
+});

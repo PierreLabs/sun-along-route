@@ -1,4 +1,4 @@
-import { parseOfp } from "./src/ofp.js";
+import { parseOfp, shiftRoute } from "./src/ofp.js";
 import { findSunEvents, positionAt, groundSpeedKt, THRESHOLDS } from "./src/events.js";
 import { horizonDip } from "./src/sun.js";
 import { bearing } from "./src/geo.js";
@@ -7,7 +7,7 @@ import { localTime, setLandMask } from "./src/tz.js";
 import { buildLandMask } from "./src/land.js";
 
 const $ = (id) => document.getElementById(id);
-let map, layer, dynLayer, night, plane, lastRoute, lastEvents = [], pendingMs = null;
+let map, layer, dynLayer, night, plane, baseRoute, lastRoute, lastEvents = [], pendingMs = null;
 
 // Land/sea mask (nautical time zone beyond territorial waters): loaded once at startup.
 const landReady = fetch("data/land-50m.json")
@@ -23,7 +23,7 @@ $("username").value = savedUser();
 
 function status(msg, err = false) { const s = $("status"); s.textContent = msg; s.classList.toggle("err", err); }
 
-function render() {
+function render({ refit = true, elapsedMs = 0 } = {}) {
   if (!lastRoute) return;
   const events = findSunEvents(lastRoute);
   $("result").hidden = false;
@@ -49,7 +49,7 @@ function render() {
   const line = L.polyline(lastRoute.points.map((p) => [p.lat, p.lon]), { color: "#d9730d", weight: 3 }).addTo(layer);
   events.forEach((e) => L.circleMarker([e.lat, e.lon], { radius: 6, color: e.rising ? "#e0a400" : "#7a3ea1", fillOpacity: 0.9 })
     .bindTooltip(`${e.label}<br>${e.utc} UTC · ${e.local.time} (${e.local.offset})`).addTo(layer));
-  map.fitBounds(line.getBounds(), { padding: [20, 20] });
+  if (refit) map.fitBounds(line.getBounds(), { padding: [20, 20] });
 
   // Dynamic objects are created once and then updated (no re-creation on every slider move).
   dynLayer?.remove();
@@ -66,10 +66,8 @@ function render() {
   lastEvents = events;
   const t0 = lastRoute.points[0].t, t1 = lastRoute.points.at(-1).t;
   const slider = $("time");
-  const keep = Number(slider.value);
   slider.min = t0; slider.max = t1; slider.step = 60000;
-  slider.value = keep >= t0 && keep <= t1 && slider.dataset.route === String(lastRoute.offMs) ? keep : t0;
-  slider.dataset.route = String(lastRoute.offMs);
+  slider.value = Math.min(t1, t0 + elapsedMs); // same elapsed flight time after a takeoff shift
   drawAt(Number(slider.value));
 }
 
@@ -100,12 +98,23 @@ function drawAt(ms) {
   pendingMs = ms;
 }
 
+/** Elapsed flight time currently shown by the slider. */
+const currentElapsed = () => (lastRoute ? Math.max(0, Number($("time").value) - lastRoute.points[0].t) : 0);
+
+/** Shifts the whole flight so that takeoff is at offMs (UTC) and refreshes everything. */
+function setTakeoff(offMs, { refit = false } = {}) {
+  const elapsedMs = refit ? 0 : currentElapsed();
+  lastRoute = shiftRoute(baseRoute, offMs);
+  $("off-input").value = new Date(offMs).toISOString().slice(0, 16);
+  render({ refit, elapsedMs });
+}
+
 async function load(json) {
   await landReady;
   try {
-    lastRoute = parseOfp(json);
-    status(`${lastRoute.points.length} route points loaded.`);
-    render();
+    baseRoute = parseOfp(json);
+    status(`${baseRoute.points.length} route points loaded.`);
+    setTakeoff(baseRoute.offMs, { refit: true });
     return true;
   } catch (err) {
     status(err.message, true);
@@ -134,6 +143,14 @@ $("file").addEventListener("change", async (ev) => {
 });
 
 $("sample").addEventListener("click", async () => load(await (await fetch("sample/sample-ofp.json")).json()));
+
+$("off-input").addEventListener("change", (ev) => {
+  const ms = Date.parse(`${ev.target.value}:00Z`); // the field is in UTC
+  if (Number.isFinite(ms) && baseRoute) setTakeoff(ms);
+});
+$("off-minus").addEventListener("click", () => baseRoute && setTakeoff(lastRoute.offMs - 3600000));
+$("off-plus").addEventListener("click", () => baseRoute && setTakeoff(lastRoute.offMs + 3600000));
+$("off-reset").addEventListener("click", () => baseRoute && setTakeoff(baseRoute.offMs));
 
 $("time").addEventListener("input", (ev) => drawAt(Number(ev.target.value)));
 $("rows").addEventListener("click", (ev) => {

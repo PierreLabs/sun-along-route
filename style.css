@@ -23,3 +23,6 @@ td small { color:var(--muted); display:block; }
 .plane svg { width:26px; height:26px; display:block; }
 .plane polygon { fill:#d9730d; stroke:#fff; stroke-width:2; stroke-linejoin:round; }
 .legend { display:block; color:var(--muted); font-size:12px; margin-top:2px; }
+.takeoff { display:flex; flex-wrap:wrap; gap:8px 12px; align-items:center; margin-bottom:12px; }
+.takeoff input { padding:6px 8px; border:1px solid var(--line); border-radius:6px; background:transparent; color:inherit; color-scheme:light dark; }
+.takeoff .legend { margin:0; }

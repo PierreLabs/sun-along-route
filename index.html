@@ -34,6 +34,13 @@
 
 <main hidden id="result">
   <h2 id="title"></h2>
+  <div class="takeoff">
+    <label>Takeoff (UTC) <input type="datetime-local" id="off-input"></label>
+    <button type="button" id="off-minus">−1 h</button>
+    <button type="button" id="off-plus">+1 h</button>
+    <button type="button" id="off-reset">Reset to OFP time</button>
+    <small class="legend">Shifts the whole flight; the durations from the OFP are kept.</small>
+  </div>
   <div id="map"></div>
   <div class="timebar">
     <input type="range" id="time" aria-label="Flight time">
