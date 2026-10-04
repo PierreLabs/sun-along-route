@@ -20,7 +20,7 @@ In the app: type your SimBrief username (it is remembered in your browser), impo
 - `src/tz.js`: civil time zone via `tz-lookup` over land and within 12 NM of a coast; nautical time zone (`Etc/GMT±N`, 15° bands) beyond. Daylight saving handled by `Intl`.
 - `src/land.js` + `data/land-50m.json`: land/sea mask (Natural Earth 50 m via `world-atlas`, public domain).
 - Takeoff time: the "Takeoff (UTC)" field (or the ±1 h buttons) shifts the whole flight to find the best departure time for a sunrise or sunset; the OFP's durations are kept (no new wind/route computation).
-- `src/terminator.js`: subsolar point + shaded area = circle around the antisolar point, with the same threshold as the table (sunrise/sunset as seen from the aircraft's altitude). Time slider under the map; click a table row to jump to that event.
+- `src/terminator.js`: subsolar point + shaded areas = circles around the antisolar point, with the same thresholds as the table (sunrise/sunset and civil dawn/dusk, as seen from the aircraft's altitude): light shade = civil twilight, dark shade = night. Time slider under the map; click a table row to jump to that event.
 
 ## Known limitations / ideas
 

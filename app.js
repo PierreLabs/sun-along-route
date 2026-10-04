@@ -7,7 +7,7 @@ import { localTime, setLandMask } from "./src/tz.js";
 import { buildLandMask } from "./src/land.js";
 
 const $ = (id) => document.getElementById(id);
-let map, layer, dynLayer, night, plane, baseRoute, lastRoute, lastEvents = [], pendingMs = null;
+let map, layer, dynLayer, twilight, night, plane, baseRoute, lastRoute, lastEvents = [], pendingMs = null;
 
 // Land/sea mask (nautical time zone beyond territorial waters): loaded once at startup.
 const landReady = fetch("data/land-50m.json")
@@ -54,7 +54,10 @@ function render({ refit = true, elapsedMs = 0 } = {}) {
   // Dynamic objects are created once and then updated (no re-creation on every slider move).
   dynLayer?.remove();
   dynLayer = L.layerGroup().addTo(map);
-  night = L.polygon([], { stroke: false, fillColor: "#0a1030", fillOpacity: 0.4, interactive: false }).addTo(dynLayer);
+  // Two stacked shades: civil twilight (light) and night (darker, on top of the twilight shade).
+  const shade = (opacity) => L.polygon([], { stroke: false, fillColor: "#0a1030", fillOpacity: opacity, interactive: false }).addTo(dynLayer);
+  twilight = shade(0.22);
+  night = shade(0.26);
   plane = L.marker([0, 0], {
     icon: L.divIcon({
       className: "plane-icon", iconSize: [26, 26], iconAnchor: [13, 13],
@@ -81,8 +84,10 @@ function headingAt(ms, p) {
 /** Day/night terminator + aircraft position at time ms. */
 function drawNow(ms) {
   const p = positionAt(lastRoute, ms);
-  // Same threshold as the table events: sunrise/sunset as seen from the aircraft's altitude.
-  night.setLatLngs(nightRings(ms, THRESHOLDS[0].deg - horizonDip(p.altM)).map((ring) => [ring]));
+  // Same thresholds as the table events (sunrise/sunset and civil dawn/dusk), as seen from the aircraft's altitude.
+  const dip = horizonDip(p.altM);
+  twilight.setLatLngs(nightRings(ms, THRESHOLDS[0].deg - dip).map((ring) => [ring]));
+  night.setLatLngs(nightRings(ms, THRESHOLDS[1].deg - dip).map((ring) => [ring]));
   const loc = localTime(ms, p.lat, p.lon);
   plane.setLatLng([p.lat, p.lon]);
   const el = plane.getElement()?.firstChild;

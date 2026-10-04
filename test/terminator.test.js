@@ -13,7 +13,7 @@ test("the subsolar point has the sun at the zenith", () => {
 // Several seasons: circle enclosing a pole (solstices) or not (equinoxes).
 for (const [label, date] of [["March equinox", [2026, 2, 20, 9]], ["June solstice", [2026, 5, 21, 3]],
   ["October", [2026, 9, 4, 12]], ["December solstice", [2026, 11, 21, 18]]]) {
-  for (const h of [0, -0.833, -3.7]) {
+  for (const h of [0, -0.833, -3.7, -6.9, -9.7]) {
     test(`${label}, threshold ${h}°: every boundary point has an elevation ≈ threshold`, () => {
       const ms = Date.UTC(...date);
       const rings = nightRings(ms, h);
